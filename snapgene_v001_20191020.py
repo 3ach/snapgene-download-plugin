@@ -5,46 +5,10 @@ Created on Sun Oct 20 21:32:39 2019
 @author: JVM
 """
 
-#CREATE ZIP RETURN
-
 import xml.etree.ElementTree as ET 
 import requests
 from zipfile import ZipFile
 
-#%%
-#uri = "https://synbiohub.org/public/igem/BBa_E0240_sequence/1"
-#xmlfile = "C:\\Users\\JVM\\Downloads\\BBa_E0240.xml"
-#
-## create element tree object 
-#tree = ET.parse(xmlfile) 
-#  
-## get root element 
-#root = tree.getroot() 
-#
-##get displayID and set as partname
-#displayIDs = []
-#for item in root.findall('./{http://sbols.org/v2#}ComponentDefinition/{http://sbols.org/v2#}displayId'):
-#    displayIDs.append(item.text)
-#partname = displayIDs[0]
-#
-##get sequence
-#for item in root.findall('./{http://sbols.org/v2#}Sequence'):
-#    if uri == item.attrib['{http://www.w3.org/1999/02/22-rdf-syntax-ns#}about']:
-#        for child in item:
-#            if child.tag == '{http://sbols.org/v2#}elements':
-#                sequence = child.text
-#
-##find if part is circular
-#linear = True
-#for item in root.findall('./{http://sbols.org/v2#}ComponentDefinition'):
-#    if uri == item.attrib['{http://www.w3.org/1999/02/22-rdf-syntax-ns#}about']:
-#        for child in item:
-#            if child.tag == '{http://sbols.org/v2#}type':
-#                types = child.attrib['{http://www.w3.org/1999/02/22-rdf-syntax-ns#}resource']
-#                if types == 'http://identifiers.org/so/SO:0000988':
-#                    linear = False
-                                 
-#%%              
 def snapgeneseq(sequence, uri, partname, detectfeatures = True, linear = True):
     newtext_url = "http://song.ece.utah.edu/examples/pages/acceptNewText.php" #link to post to
     get_url = "http://song.ece.utah.edu/dnafiles/"+partname
@@ -151,10 +115,10 @@ def wrapper():
     data = request.json
     gburl = data['genbank']
     displayid = data['top_level'].split('/')[-2]
-    print(displayid,gburl)
+
     try:
         #instance = "synbiohub.org"
-        zipname = snapgenefile(displayid, gburl, detectfeatures = False, linear = linear)
+        zipname = snapgenefile(displayid, gburl, detectfeatures = False, linear = False)
         return send_file(zipname, attachment_filename=zipname)
     except Exception as e:
         print(e)
